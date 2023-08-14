@@ -29,3 +29,38 @@ exports.getExpense = async (req,res)=>{
         return res.status(500).json({error: err.message});
     }
 }
+
+exports.deleteExpense = async (req,res)=>{
+    const id = req.params.expenseId;
+    try{
+        const expenseToBeDeleted = await Expense.findByPk(id);
+        if(!expenseToBeDeleted){
+            return res.status(404).json({msg: "expense not found"});
+        }
+        await expenseToBeDeleted.destroy();
+        return res.json({msg: "expense deleted successfully"});
+    }
+    catch(err){
+        return res.status(500).json({error: err.message});
+    }
+}
+
+exports.editExpense = async (req,res)=>{
+    const id = req.params.expenseId;
+    const {expenseAmount, description, category} = req.body;
+    try{
+        const expenseToBeUpdated = await Expense.findByPk(id);
+        if(!expenseToBeUpdated){
+            return res.status(404).json({msg: "expense not found"});
+        }
+        if(expenseAmount) expenseToBeUpdated.expenseAmount = expenseAmount;
+        if(description) expenseToBeUpdated.description = description;
+        if(category) expenseToBeUpdated.category = category;
+
+        const updatedExpense = await expenseToBeUpdated.save();
+        return res.json(updatedExpense);
+    }
+    catch(err){
+        return res.status(500).json({error: err.message});
+    }
+}
