@@ -5,11 +5,13 @@ const sequelize = require('./config/database');
 const User = require('./models/user');
 const Expense = require('./models/expense');
 const userRounter = require('./routes/user');
+const expenseRouter = require('./routes/expense');
 
 const app = express();
 app.use(express.json());
 
 app.use('/api/user',userRounter);
+app.use('/api/user/expenses', expenseRouter);
 
 
 User.hasMany(Expense);
