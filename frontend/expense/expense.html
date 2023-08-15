@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>expenses</title>
+</head>
+<body>
+    <h3>manage your expenses here</h3>
+    <label >ExpenseAmount:</label>
+    <input type="number" id="amount-inp" placeholder="enter amount" required>
+    <label >description:</label>
+    <input type="text" id="desc-inp" placeholder="add description">
+    <label >Category:</label>
+    <select id="cat-input">
+        <option value="movies">movies</option>
+        <option value="food">food</option>
+        <option value="fun">fun</option>
+        <option value="other">other</option>
+    </select>
+    <button onclick="addExpense()">add expense</button>
+    <br>
+    <ul id="main-area">
+
+    </ul>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+        async function addExpense(){
+            const expenseAmount = document.getElementById('amount-inp').value;
+            const description = document.getElementById('desc-inp').value;
+            const category = document.getElementById('cat-input').value;
+
+            if(!expenseAmount || !description){
+                alert('all fields are necessary');
+                return;
+            }
+            const expense = {
+                expenseAmount,
+                description,
+                category
+            }
+            try{
+            const response = await axios.post("http://localhost:3000/api/user/expenses", expense, {
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        }
+                    });
+                    showOnScreen(response.data);
+                }
+                catch(err){
+                    document.body.innerHTML += `<p style="color: red;">${err.message}</p>`
+                }
+            
+                document.getElementById('amount-inp').value = '';
+                document.getElementById('desc-inp').value = '';
+                document.getElementById('cat-input').value = '';
+            
+        }
+
+        function showOnScreen(obj){
+            const mainArea = document.getElementById('main-area');
+            const parent = document.createElement('li');
+            const child1 = document.createElement('span');
+            const child2 = document.createElement('span');
+            const child3 = document.createElement('span');
+            const child4 = document.createElement('button');
+            child1.innerHTML = `${obj.expenseAmount}- `;
+            child2.innerHTML = `${obj.category}- `;
+            child3.innerHTML = `${obj.description}  `;
+            child4.innerHTML = "delete expense";
+            child4.addEventListener("click",async ()=>{
+                try{
+                    await axios.delete(`http://localhost:3000/api/user/expenses/${obj.id}`, {headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                    parent.remove();
+                }
+                catch(err){
+                    document.body.innerHTML += `<p style="color: red;">${err.message}</p>`
+                }
+                
+            })
+
+            parent.appendChild(child1);
+            parent.appendChild(child2);
+            parent.appendChild(child3);
+            parent.appendChild(child4)
+            mainArea.appendChild(parent);
+        }
+
+
+        window.addEventListener("DOMContentLoaded",async ()=>{
+            try{
+                const response = await axios.get("http://localhost:3000/api/user/expenses",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                const expenses = response.data;
+                for(let i=0; i<expenses.length; i++){
+                    showOnScreen(expenses[i]);
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
+
+        })
+    </script>
+</body>
+</html>

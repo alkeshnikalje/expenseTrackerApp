@@ -25,6 +25,7 @@
 
             if(!email || !password){
                 alert("all fields are required");
+                return ;
             }
 
             userDetails = {
@@ -33,6 +34,9 @@
             }
             try{
                 const response = await axios.post("http://localhost:3000/api/user/login",userDetails);
+                localStorage.setItem("token",response.data.token);
+                alert('successfully logged in');
+                window.location.href = "../expense/expense.html"
             }
             catch(err){
                 document.body.innerHTML += `<p style="color: red;">${err.response.data.msg}</p>`
