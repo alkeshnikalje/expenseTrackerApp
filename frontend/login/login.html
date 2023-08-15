@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Login</title>
+</head>
+<body>
+    <h3>login here and start managing your expenses</h3>
+    <label >Email:</label>
+    <input type="email" id="email-inp" placeholder="enter email" required>
+    <label >Password:</label>
+    <input type="password" id="pass-inp" placeholder="enter a strong password" required>
+    <button onclick="login()">login</button>
+    <br>
+    <br>
+    <a href="../signup/signup.html">New here? signUp</a>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+        async function login(){
+            email = document.getElementById('email-inp').value;
+            password = document.getElementById('pass-inp').value;
+
+            if(!email || !password){
+                alert("all fields are required");
+            }
+
+            userDetails = {
+                email,
+                password
+            }
+            try{
+                const response = await axios.post("http://localhost:3000/api/user/login",userDetails);
+            }
+            catch(err){
+                document.body.innerHTML += `<p style="color: red;">${err.response.data.msg}</p>`
+            }
+        }
+    </script>
+</body>
+</html>

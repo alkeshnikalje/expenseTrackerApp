@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense signup</title>
+</head>
+<body>
+    <h3>Welcome to Expense Tracker App. signup here</h3>
+    <br>
+    <label >Name:</label>
+    <input type="text"  id="name-inp" placeholder="enter your name" required>
+    <label >Email:</label>
+    <input type="email" id="email-inp" placeholder="enter email" required>
+    <label >Password:</label>
+    <input type="password" id="pass-inp" placeholder="enter a strong password" required>
+    <button onclick="signUp()">sign up</button>
+    <br>
+    <br>
+    <a href="../login/login.html">already a user? click here to login</a>
+    <br>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+
+        async function signUp(){
+            const name = document.getElementById('name-inp').value;
+            const email = document.getElementById('email-inp').value;
+            const password = document.getElementById('pass-inp').value;
+
+            if(!name || !email || !password){
+                alert('all fields are required');
+                return;
+            }
+
+            usesrDetails = {
+                name,
+                email,
+                password
+            }
+            try{
+                const response = await axios.post("http://localhost:3000/api/user/signup",usesrDetails);
+                if(response.status == 200){
+                    alert('successfully signedup');
+                    window.location.href = '../login/login.html';
+                }
+            }
+            catch(err){
+                document.body.innerHTML += `<p style="color: red;">${err.response.data.msg}</p>`
+            }
+            
+            
+        }
+    </script>
+</body>
+</html>

@@ -9,6 +9,7 @@ const expenseRouter = require('./routes/expense');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use('/api/user',userRounter);
 app.use('/api/user/expenses', expenseRouter);
