@@ -47,3 +47,16 @@ exports.login = async (req,res)=>{
         return res.status(500).json({error : err.message});
     }
 }
+
+exports.getUser = async (req,res)=>{
+    try{
+        const user = await User.findByPk(req.user.id);
+        if(!user){
+            return res.status(404).json({msg: "user not found"});
+        }
+        return res.json(user);
+    }
+    catch(err){
+        return res.status(500).json({error: err.message});
+    }
+}
