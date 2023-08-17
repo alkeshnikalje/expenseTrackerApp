@@ -94,20 +94,6 @@
         }
 
 
-        window.addEventListener("DOMContentLoaded",async ()=>{
-            try{
-                const response = await axios.get("http://localhost:3000/api/user/expenses",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
-                const expenses = response.data;
-                for(let i=0; i<expenses.length; i++){
-                    showOnScreen(expenses[i]);
-                }
-            }
-            catch(err){
-                console.log(err);
-            }
-
-        })
-
         const premiumBtn = document.getElementById('rzp-btn');
 
         premiumBtn.addEventListener("click", async () => {
@@ -170,9 +156,20 @@ async function isPremiumUser(){
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    isPremiumUser();
-});
+window.addEventListener("DOMContentLoaded",async ()=>{
+        try{
+            isPremiumUser();
+            const response = await axios.get("http://localhost:3000/api/user/expenses",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+            const expenses = response.data;
+            for(let i=0; i<expenses.length; i++){
+                    showOnScreen(expenses[i]);
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
+
+        })
 
 
     </script>
