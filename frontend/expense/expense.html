@@ -29,6 +29,13 @@
     <ul id="main-area">
 
     </ul>
+    <br>
+    <div id="leaderboard">
+        <h3 id="h3ele"></h3>
+        <ul id="leaderboard-list">
+
+        </ul>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -147,6 +154,25 @@ async function isPremiumUser(){
             successMessage.textContent = "You are premium a user.";
             const btn = document.createElement("button");
             btn.innerHTML = "show leaderboard";
+            btn.addEventListener("click",async()=>{
+                try{
+                    const response = await axios.get("http://localhost:3000/api/user/premiumFeature",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                    const leaderboardData = response.data;
+                    document.getElementById('h3ele').innerHTML = "Leaderboard-"
+                    for(let i=0; i<leaderboardData.length; i++){
+                        if(!leaderboardData[i].total){
+                            leaderboardData[i].total = 0;
+                            showLeaderBoard(leaderboardData[i]);
+                        }else{
+                            showLeaderBoard(leaderboardData[i]);
+                        }
+                        
+                    }
+                }
+                catch(err){
+                    console.log(err);
+                }
+            })
             divForBtnAndMsg.appendChild(successMessage);
             divForBtnAndMsg.appendChild(btn);
             main.appendChild(divForBtnAndMsg);
@@ -156,6 +182,7 @@ async function isPremiumUser(){
         console.log(err);
     }
 }
+
 
 window.addEventListener("DOMContentLoaded",async ()=>{
         try{
@@ -170,7 +197,16 @@ window.addEventListener("DOMContentLoaded",async ()=>{
                 console.log(err);
             }
 
-        })
+        });
+
+    function showLeaderBoard(obj){
+        const main = document.getElementById("leaderboard");
+        const parent = document.getElementById('leaderboard-list');
+        const childele1 = document.createElement('li');
+        childele1.innerHTML = `Name- ${obj.name} totalExpense- ${obj.total}`
+        parent.appendChild(childele1);
+        main.appendChild(parent);
+    }
 
 
     </script>
