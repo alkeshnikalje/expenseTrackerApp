@@ -1,29 +1,38 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
+const sequelize = require('../config/database');
 
 
+exports.addExpense = async (req, res) => {
+    const { expenseAmount, description, category } = req.body;
+    const transaction = await sequelize.transaction(); // Start a new transaction
 
-exports.addExpense = async (req,res)=>{
-    const {expenseAmount, description, category} = req.body;
-    try{
-        if(!expenseAmount || !category){
-            return res.status(400).json({msg: "expense amount and category is a required field"});
+    try {
+        if (!expenseAmount || !category) {
+            return res.status(400).json({ msg: "expense amount and category are required fields" });
         }
+
         const expense = await Expense.create({
             expenseAmount,
             description,
             category,
-            userId : req.user.id,
-        });
-        const user = await User.findByPk(req.user.id);
+            userId: req.user.id,
+        }, { transaction }); // Pass the transaction to the create method
+
+        const user = await User.findByPk(req.user.id, { transaction }); // Pass the transaction to findByPk
         user.totalExpenses = user.totalExpenses + Number(expenseAmount);
-        await user.save();
+        await user.save({ transaction }); // Pass the transaction to save
+
+        // If everything is successful, commit the transaction
+        await transaction.commit();
+
         return res.json(expense);
+    } catch (err) {
+        // If an error occurs, rollback the transaction
+        await transaction.rollback();
+        return res.status(500).json({ error: err.message });
     }
-    catch(err){
-        return res.status(500).json({error: err.message});
-    }
-}
+};
 
 exports.getExpense = async (req,res)=>{
     try{
@@ -42,6 +51,9 @@ exports.deleteExpense = async (req,res)=>{
         if(!expenseToBeDeleted){
             return res.status(404).json({msg: "expense not found"});
         }
+        const user = await User.findByPk(req.user.id);
+        user.totalExpenses = user.totalExpenses - Number(expenseToBeDeleted.expenseAmount);
+        await user.save();
         await expenseToBeDeleted.destroy();
         return res.json({msg: "expense deleted successfully"});
     }
