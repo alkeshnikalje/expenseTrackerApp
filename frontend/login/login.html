@@ -14,6 +14,9 @@
     <button onclick="login()">login</button>
     <br>
     <br>
+    <button onclick="forgotPass()">forgot password</button>
+    <br>
+    <br>
     <a href="../signup/signup.html">New here? signUp</a>
 
 
@@ -41,6 +44,10 @@
             catch(err){
                 document.body.innerHTML += `<p style="color: red;">${err.response.data.msg}</p>`
             }
+        }
+
+        function forgotPass(){
+            window.location.href = "../forgotpass/index.html";
         }
     </script>
 </body>
