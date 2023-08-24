@@ -1,4 +1,6 @@
 const Expense = require('../models/expense');
+const User = require('../models/user');
+
 
 
 exports.addExpense = async (req,res)=>{
@@ -11,8 +13,11 @@ exports.addExpense = async (req,res)=>{
             expenseAmount,
             description,
             category,
-            userId : req.user.id
+            userId : req.user.id,
         });
+        const user = await User.findByPk(req.user.id);
+        user.totalExpenses = user.totalExpenses + Number(expenseAmount);
+        await user.save();
         return res.json(expense);
     }
     catch(err){

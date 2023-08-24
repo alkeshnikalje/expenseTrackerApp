@@ -160,8 +160,8 @@ async function isPremiumUser(){
                     const leaderboardData = response.data;
                     document.getElementById('h3ele').innerHTML = "Leaderboard-"
                     for(let i=0; i<leaderboardData.length; i++){
-                        if(!leaderboardData[i].total){
-                            leaderboardData[i].total = 0;
+                        if(!leaderboardData[i].totalExpenses){
+                            leaderboardData[i].totalExpenses = 0;
                             showLeaderBoard(leaderboardData[i]);
                         }else{
                             showLeaderBoard(leaderboardData[i]);
@@ -203,7 +203,7 @@ window.addEventListener("DOMContentLoaded",async ()=>{
         const main = document.getElementById("leaderboard");
         const parent = document.getElementById('leaderboard-list');
         const childele1 = document.createElement('li');
-        childele1.innerHTML = `Name- ${obj.name} totalExpense- ${obj.total}`
+        childele1.innerHTML = `Name- ${obj.name} totalExpense- ${obj.totalExpenses}`
         parent.appendChild(childele1);
         main.appendChild(parent);
     }
