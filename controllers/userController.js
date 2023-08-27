@@ -60,3 +60,24 @@ exports.getUser = async (req,res)=>{
         return res.status(500).json({error: err.message});
     }
 }
+
+
+exports.resetPassword = async (req,res)=>{
+    const {resetToken, password} = req.body;
+    try{
+        const user = await User.findOne({where: { resetToken }});
+        if(!user){
+            return res.status(400).json({msg: "link expired or something went wrong"});
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword
+        user.resetToken = null;
+        await user.save();
+
+        return res.status(200).json({ msg: 'Password reset successful' });
+    }
+    catch(err){
+        return res.status(500).json({error: err.message});
+    }
+}

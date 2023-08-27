@@ -9,16 +9,18 @@ const expenseRouter = require('./routes/expense');
 const Order = require('./models/order');
 const purchaseRouter = require('./routes/purchase');
 const premiumRouter = require('./routes/premiumFeature');
+const forgotPassRouter = require('./routes/forgotpass');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 app.use('/api/user',userRounter);
 app.use('/api/user/expenses', expenseRouter);
 app.use('/api', purchaseRouter);
 app.use('/api/user',premiumRouter); 
-
+app.use('/api/user', forgotPassRouter);
 
 User.hasMany(Expense);
 

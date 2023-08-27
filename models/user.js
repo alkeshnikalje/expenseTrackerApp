@@ -15,7 +15,6 @@ const User = sequelize.define('users',{
     },
     email : {
         type : Sequelize.STRING,
-        unique : true,
         allowNull : false
     },
     password : {
@@ -28,6 +27,10 @@ const User = sequelize.define('users',{
     },
     totalExpenses : {
         type : Sequelize.INTEGER
+    },
+    resetToken : {
+        type : Sequelize.STRING,
+        defaultValue : null
     }
 })
 
