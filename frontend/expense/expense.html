@@ -156,6 +156,7 @@ async function isPremiumUser(){
             btn.innerHTML = "show leaderboard";
             btn.addEventListener("click",async()=>{
                 try{
+
                     const response = await axios.get("http://localhost:3000/api/user/premiumFeature",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
                     const leaderboardData = response.data;
                     document.getElementById('h3ele').innerHTML = "Leaderboard-"
