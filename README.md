@@ -4,7 +4,7 @@ Welcome to the Expense Tracker application! The app allows users to track their 
 
 ## Features
 
-- **User Authentication:** Users can sign up and log in securely using JSON Web Tokens (JWT).
+- **User Authentication:** Users can sign up and log in securely. I used jsonwebtoken (JWT) for the authenticaiton.
 - **Expense Creation:** Users can create new expenses by specifying the amount, description, and category.
 - **Expense Deletion:** Users have the ability to delete their expenses, which are removed from the MySQL database.
 - **Password Reset:** If a user forgets their password, they can initiate a password reset process and receive a reset link via email.
