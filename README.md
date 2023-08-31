@@ -14,7 +14,7 @@ Welcome to the Expense Tracker application! The app allows users to track their 
 ## Premium Features
 
 - **Leaderboard:** Premium users can view a leaderboard that showcases other users' total expense amounts, providing insights into spending habits.
-- *More premium features will be added in the future!*
+- **Download:** Premium users can obtain a report of their expenses in files, securely stored using AWS S3 cloud storage. 
 
 ## Payment Integration
 
