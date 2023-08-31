@@ -162,25 +162,8 @@ async function isPremiumUser(){
             btn1.innerHTML = "Download"
             btn.innerHTML = "show leaderboard";
             btn.addEventListener("click",async()=>{
-                try{
-
-                    const response = await axios.get("http://localhost:3000/api/user/premiumFeature",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
-                    const leaderboardData = response.data;
-                    document.getElementById('h3ele').innerHTML = "Leaderboard-"
-                    for(let i=0; i<leaderboardData.length; i++){
-                        if(!leaderboardData[i].totalExpenses){
-                            leaderboardData[i].totalExpenses = 0;
-                            showLeaderBoard(leaderboardData[i]);
-                        }else{
-                            showLeaderBoard(leaderboardData[i]);
-                        }
-
-                        
-                    }
-                }
-                catch(err){
-                    console.log(err);
-                }
+                localStorage.setItem("flag", true);
+                window.location.reload();
             })
             btn1.addEventListener("click", async()=>{
                 const res = await axios.get("http://localhost:3000/api/user/expenses/download",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
@@ -204,6 +187,31 @@ async function isPremiumUser(){
     }
 }
 
+async function leaderData(){
+    const flag = localStorage.getItem("flag");
+    if(flag){
+        try{
+                    
+            const response = await axios.get("http://localhost:3000/api/user/premiumFeature",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+            const leaderboardData = response.data;
+            document.getElementById('h3ele').innerHTML = "Leaderboard-"
+            for(let i=0; i<leaderboardData.length; i++){
+                if(!leaderboardData[i].totalExpenses){
+                    leaderboardData[i].totalExpenses = 0;
+                    showLeaderBoard(leaderboardData[i]);
+                }else{
+                        showLeaderBoard(leaderboardData[i]);
+                }  
+                }
+            localStorage.removeItem("flag");
+        }
+        catch(err){
+                console.log(err);
+                }
+    }
+}
+
+leaderData();
 
 window.addEventListener("DOMContentLoaded",async ()=>{
         try{
