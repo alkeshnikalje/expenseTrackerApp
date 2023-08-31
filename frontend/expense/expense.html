@@ -183,7 +183,8 @@ async function isPremiumUser(){
                 }
             })
             btn1.addEventListener("click", async()=>{
-                await axios.get("http://localhost:3000/api/user/expenses/download",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                const res = await axios.get("http://localhost:3000/api/user/expenses/download",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                window.location.href = `${res.data.url}`
                 document.getElementById('file-head').innerHTML = "Files-"
                 const response = await axios.get("http://localhost:3000/api/user/expenses/files",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
                 const files = response.data;
