@@ -11,6 +11,7 @@ const purchaseRouter = require('./routes/purchase');
 const premiumRouter = require('./routes/premiumFeature');
 const forgotPassRouter = require('./routes/forgotpass');
 const Downloads = require('./models/downloadfile');
+const fileRouter = require('./routes/files');
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use('/api/user/expenses', expenseRouter);
 app.use('/api', purchaseRouter);
 app.use('/api/user',premiumRouter); 
 app.use('/api/user', forgotPassRouter);
+app.use('/api/user/expenses', fileRouter);
 
 User.hasMany(Expense);
 

@@ -36,6 +36,11 @@
 
         </ul>
     </div>
+    <br>
+    <div id="files">
+        <h3 id="file-head"></h3>
+        <ul id="file-list"></ul>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -153,6 +158,8 @@ async function isPremiumUser(){
             const successMessage = document.createElement("span");
             successMessage.textContent = "You are premium a user.";
             const btn = document.createElement("button");
+            const btn1 = document.createElement("button");
+            btn1.innerHTML = "Download"
             btn.innerHTML = "show leaderboard";
             btn.addEventListener("click",async()=>{
                 try{
@@ -167,6 +174,7 @@ async function isPremiumUser(){
                         }else{
                             showLeaderBoard(leaderboardData[i]);
                         }
+
                         
                     }
                 }
@@ -174,8 +182,19 @@ async function isPremiumUser(){
                     console.log(err);
                 }
             })
+            btn1.addEventListener("click", async()=>{
+                await axios.get("http://localhost:3000/api/user/expenses/download",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                document.getElementById('file-head').innerHTML = "Files-"
+                const response = await axios.get("http://localhost:3000/api/user/expenses/files",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+                const files = response.data;
+                for(let i=0; i < files.length; i++){
+                    showFiles(files[i]);
+                }
+            })
+
             divForBtnAndMsg.appendChild(successMessage);
             divForBtnAndMsg.appendChild(btn);
+            divForBtnAndMsg.appendChild(btn1);
             main.appendChild(divForBtnAndMsg);
         }
     }
@@ -205,6 +224,15 @@ window.addEventListener("DOMContentLoaded",async ()=>{
         const parent = document.getElementById('leaderboard-list');
         const childele1 = document.createElement('li');
         childele1.innerHTML = `Name- ${obj.name} totalExpense- ${obj.totalExpenses}`
+        parent.appendChild(childele1);
+        main.appendChild(parent);
+    }
+
+    function showFiles(obj){
+        const main = document.getElementById("files");
+        const parent = document.getElementById('file-list');
+        const childele1 = document.createElement('li');
+        childele1.innerHTML = `<a href="${obj.url}">${obj.url}</a>`
         parent.appendChild(childele1);
         main.appendChild(parent);
     }
