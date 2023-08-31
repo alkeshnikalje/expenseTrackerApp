@@ -10,6 +10,7 @@ const Order = require('./models/order');
 const purchaseRouter = require('./routes/purchase');
 const premiumRouter = require('./routes/premiumFeature');
 const forgotPassRouter = require('./routes/forgotpass');
+const Downloads = require('./models/downloadfile');
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,8 @@ app.use('/api/user', forgotPassRouter);
 User.hasMany(Expense);
 
 User.hasMany(Order);
+
+User.hasMany(Downloads);
 
 
 sequelize.sync({alter : true})

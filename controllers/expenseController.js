@@ -1,7 +1,10 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
 const sequelize = require('../config/database');
-
+const AWS = require('aws-sdk');
+const Downloads = require('../models/downloadfile');
+const { response } = require('express');
+const dotenv = require('dotenv').config();
 
 exports.addExpense = async (req, res) => {
     const { expenseAmount, description, category } = req.body;
@@ -81,3 +84,36 @@ exports.editExpense = async (req,res)=>{
         return res.status(500).json({error: err.message});
     }
 }
+
+
+exports.downloadFile = async (req,res)=>{
+    try{
+        const filename = `expense${req.user.id}/${new Date()}.txt`
+        const expenses = await Expense.findAll({where : {userId : req.user.id}});
+        const stringyfiedExpenses = JSON.stringify(expenses);
+
+        let S3bucket = new AWS.S3({
+            accessKeyId : process.env.S3ACCESS_KEY,
+            secretAccessKey : process.env.S3ACCESS_SECRET
+        })
+
+        var params = {
+            Bucket : process.env.BUCKET,
+            Key : filename,
+            Body : stringyfiedExpenses,
+            ACL : "public-read"
+        }
+
+        S3bucket.upload(params, async (err,response)=>{
+            if(err){
+                console.log(err);
+                return ;
+            }
+           const file = await Downloads.create({url : response.Location, userId : req.user.id});
+           return res.json({url : response.Location}); 
+        })
+    }
+    catch(err){
+        return res.status(500).json({error: err.message});
+    }
+}   
