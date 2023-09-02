@@ -117,3 +117,24 @@ exports.downloadFile = async (req,res)=>{
         return res.status(500).json({error: err.message});
     }
 }   
+
+
+exports.getByPagination = async (req,res)=>{
+    try{
+        const page = Number(req.query.page);
+        const limit = Number(req.query.limit);
+        const offset = (page-1)*limit;
+        const expenseCount = await Expense.count({where : {userId : req.user.id}});
+        const totlaPages = Math.ceil(expenseCount/limit);
+        const expenses = await Expense.findAll({
+            where : {userId : req.user.id},
+            offset,
+            limit
+        });
+        
+        return res.json({expenses, totlaPages});
+    }
+    catch(err){
+        return res.status(500).json({error: err.message});
+    }
+}
