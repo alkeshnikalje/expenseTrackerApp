@@ -25,10 +25,22 @@
         <span id="btn-parent"><button id="rzp-btn">Buy Premium</button></span>
     </div>
     <br>
-    <h3>Expenses-</h3>
-    <ul id="main-area">
+    <div id="expenses">
+        <h3>Expenses-</h3>
+        <ul id="main-area">
+    
+        </ul>
+    </div>
+    <div>
+        <select id="limit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+    </div>
+    <div id="pagination">
 
-    </ul>
+    </div>
     <br>
     <div id="leaderboard">
         <h3 id="h3ele"></h3>
@@ -41,10 +53,13 @@
         <h3 id="file-head"></h3>
         <ul id="file-list"></ul>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+
+        let currentPage = 1;
+        let totalPages = 1; // Initialize to 1 page initially
+
         async function addExpense(){
             const expenseAmount = document.getElementById('amount-inp').value;
             const description = document.getElementById('desc-inp').value;
@@ -74,10 +89,32 @@
                 document.getElementById('amount-inp').value = '';
                 document.getElementById('desc-inp').value = '';
                 document.getElementById('cat-input').value = '';
-            
+                
+                fetchExpensesByPage(currentPage);
+        }
+
+        function renderPaginationButtons() {
+            const paginationContainer = document.getElementById("pagination");
+            paginationContainer.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement("button");
+                button.innerText = i;
+                button.addEventListener("click", () => {
+                    currentPage = i;
+                    fetchExpensesByPage(currentPage);
+                });
+
+                if (i === currentPage) {
+                    button.classList.add("active");
+                }
+
+                paginationContainer.appendChild(button);
+            }
         }
 
         function showOnScreen(obj){
+            const main = document.getElementById('expenses');
             const mainArea = document.getElementById('main-area');
             const parent = document.createElement('li');
             const child1 = document.createElement('span');
@@ -104,6 +141,7 @@
             parent.appendChild(child3);
             parent.appendChild(child4)
             mainArea.appendChild(parent);
+            main.appendChild(mainArea);
         }
 
 
@@ -213,20 +251,20 @@ async function leaderData(){
 
 leaderData();
 
-window.addEventListener("DOMContentLoaded",async ()=>{
-        try{
-            isPremiumUser();
-            const response = await axios.get("http://localhost:3000/api/user/expenses",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
-            const expenses = response.data;
-            for(let i=0; i<expenses.length; i++){
-                    showOnScreen(expenses[i]);
-                }
-            }
-            catch(err){
-                console.log(err);
-            }
+// window.addEventListener("DOMContentLoaded",async ()=>{
+//         try{
+//             isPremiumUser();
+//             const response = await axios.get("http://localhost:3000/api/user/expenses",{headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+//             const expenses = response.data;
+//             for(let i=0; i<expenses.length; i++){
+//                     showOnScreen(expenses[i]);
+//                 }
+//             }
+//             catch(err){
+//                 console.log(err);
+//             }
 
-        });
+//         });
 
     function showLeaderBoard(obj){
         const main = document.getElementById("leaderboard");
@@ -246,6 +284,39 @@ window.addEventListener("DOMContentLoaded",async ()=>{
         main.appendChild(parent);
     }
 
+    async function fetchExpensesByPage(page) {
+            try {
+                const limit = document.getElementById("limit").value; // Get the selected limit
+                const response = await axios.get(`http://localhost:3000/api/user/expenses/pagination?page=${page}&limit=${limit}`, {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+
+                const expenses = response.data.expenses;
+                totalPages = response.data.totlaPages;
+
+                renderPaginationButtons(); // Render pagination buttons with updated totalPages
+
+                const mainArea = document.getElementById("main-area");
+                mainArea.innerHTML = ""; // Clear the existing expenses list
+
+                // Display the expenses for the current page
+                expenses.forEach(expense => {
+                    showOnScreen(expense);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        isPremiumUser();
+        fetchExpensesByPage(currentPage);
+
+        document.getElementById("limit").addEventListener("change", () => {
+        // When the limit value changes, fetch expenses for the current page with the new limit
+        fetchExpensesByPage(currentPage);
+    });
 
     </script>
 </body>
