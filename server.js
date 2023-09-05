@@ -21,18 +21,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use(helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-}
-));
+// app.use(helmet({
+//     contentSecurityPolicy: false,
+//     crossOriginEmbedderPolicy: false,
+// }
+// ));
 
-const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, "access.log"),
-    { flags: "a" }
-  );
+// const accessLogStream = fs.createWriteStream(
+//     path.join(__dirname, "access.log"),
+//     { flags: "a" }
+//   );
 
-  app.use(morgan('combined', {stream: accessLogStream}));
+//   app.use(morgan('combined', {stream: accessLogStream}));
 
 app.use('/api/user',userRounter);
 app.use('/api/user/expenses', expenseRouter);
