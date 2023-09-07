@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eeeeee; /* Background color for the entire page */
+}
+
+#navbar {
+    background-color: #0074D9;
+    color: white;
+    text-align: left;
+    padding: 20px;
+}
+
+#loginbox {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#loginbox h5 {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+#loginbox label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#loginbox input[type="email"],
+#loginbox input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#loginbox button {
+    background-color: #0074D9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#loginbox button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+#loginbox a {
+    text-decoration: none;
+    color: #0074D9;
+    display: block;
+    margin-top: 10px;
+}

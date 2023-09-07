@@ -243,3 +243,8 @@ document.getElementById("limit").addEventListener("change", () => {
 // When the limit value changes, fetch expenses for the current page with the new limit
 fetchExpensesByPage(currentPage);
 });
+
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "../login/login.html"
+}

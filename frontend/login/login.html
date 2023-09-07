@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Login</title>
+    <link rel="stylesheet" href="../login/style.css">
 </head>
 <body>
-    <h3>login here and start managing your expenses</h3>
-    <label >Email:</label>
-    <input type="email" id="email-inp" placeholder="enter email" required>
-    <label >Password:</label>
-    <input type="password" id="pass-inp" placeholder="enter a strong password" required>
-    <button onclick="login()">login</button>
+    <div id="navbar">
+        <h3>Expense Tracker</h3>
+    </div>
     <br>
-    <br>
-    <button onclick="forgotPass()">forgot password</button>
-    <br>
-    <br>
-    <a href="../signup/signup.html">New here? signUp</a>
+    <div id="loginbox">
+        
+        <label >Email:</label>
+        <input type="email" id="email-inp" placeholder="enter email" required>
+        <label >Password:</label>
+        <input type="password" id="pass-inp" placeholder="enter a strong password" required>
+        <button onclick="login()">login</button>
+        <br>
+        <br>
+        <button onclick="forgotPass()">forgot password</button>
+        <br>
+        <br>
+        <a href="../signup/signup.html">New here? signUp</a>
+    </div>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>

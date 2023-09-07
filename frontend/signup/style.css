@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif; /* Specify a font family for the entire page */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-color: #eeeeee;
+}
+
+#navbar {
+    background-color: #0074D9; /* Navbar background color */
+    color: white; /* Text color for the navbar */
+    text-align: left; /* Center align text within the navbar */
+    padding: 20px /* Add padding to the navbar */
+}
+
+#signupbox {
+    max-width: 400px; /* Set the maximum width for the signup box */
+    margin: 0 auto; /* Center the signup box horizontally */
+    padding: 20px; /* Add padding to the signup box */
+    background-color: #f7f7f7; /* Signup box background color */
+    border-radius: 10px; /* Add rounded corners to the signup box */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a shadow to the signup box */
+}
+
+/* Optional: Style form elements within the signup box */
+#signupbox label {
+    display: block; /* Display labels as block elements */
+    margin-bottom: 10px; /* Add space below labels */
+}
+
+#signupbox input[type="text"],
+#signupbox input[type="email"],
+#signupbox input[type="password"] {
+    width: 100%; /* Make form inputs fill the entire width of the box */
+    padding: 10px; /* Add padding to form inputs */
+    margin-bottom: 15px; /* Add space below form inputs */
+    border: 1px solid #ccc; /* Add a border to form inputs */
+    border-radius: 5px; /* Add rounded corners to form inputs */
+}
+
+#signupbox button {
+    background-color: #0074D9; /* Button background color */
+    color: white; /* Button text color */
+    padding: 10px 20px; /* Add padding to the button */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Add rounded corners to the button */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+#signupbox a {
+    text-decoration: none; /* Remove underlines from links */
+    color: #0074D9; /* Link text color */
+}

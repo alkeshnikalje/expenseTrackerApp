@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>expenses</title>
+    <link rel="stylesheet" href="../expense/style.css">
 </head>
 <body>
-    <h3>manage your expenses here</h3>
+    <div id="navbar">
+        <h3>Expense Tracker</h3>
+        <div id="premium">
+            <span id="btn-parent"><button id="rzp-btn">Buy Premium</button></span>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <br>
+    <div id="expensebox">
     <label >ExpenseAmount:</label>
     <input type="number" id="amount-inp" placeholder="enter amount" required>
     <label >description:</label>
@@ -19,11 +28,9 @@
         <option value="other">other</option>
     </select>
     <button onclick="addExpense()">add expense</button>
-    <br>
-    <br>
-    <div id="premium">
-        <span id="btn-parent"><button id="rzp-btn">Buy Premium</button></span>
     </div>
+    <br>
+    <br>
     <br>
     <div id="expenses">
         <h3>Expenses-</h3>
